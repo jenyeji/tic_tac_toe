@@ -1,9 +1,11 @@
-function initTicTacToe() {
+function initTicTacToe(n) {
   const table = document.querySelector('table');
+  // clean up any previous rows
+  document.querySelectorAll('tr').forEach((row) => row.remove());
 
-  Array.from({ length: 3 }).forEach((_, rowIndex) => {
+  Array.from({ length: n }).forEach((_, rowIndex) => {
     const row = document.createElement('tr');
-    Array.from({ length: 3 }).forEach((_, colIndex) => {
+    Array.from({ length: n }).forEach((_, colIndex) => {
       const td = document.createElement('td');
       const button = document.createElement('button');
       button.id = `${rowIndex}.${colIndex}`;
@@ -19,6 +21,10 @@ function resetBoard(board) {
     row.forEach((_, c) => {
       board[r][c] = null;
       const cell = document.getElementById(`${r}.${c}`);
+      if (!cell) {
+        console.log(r, c);
+        console.log(board);
+      }
       cell.textContent = '';
       cell.disabled = false;
       cell.style.cursor = 'pointer';
@@ -26,7 +32,7 @@ function resetBoard(board) {
   });
 }
 
-function gameWon(board, r, c) {
+function gameWon(board, r, c, n) {
   const player = board[r][c];
 
   // Check row
@@ -35,10 +41,10 @@ function gameWon(board, r, c) {
   if (board.every((row) => row[c] === player)) return true;
   // Check diagonals
   const isMainDiagonal = r === c;
-  const isAntiDiagonal = r + c === 2;
+  const isAntiDiagonal = r + c === n - 1;
   if (isMainDiagonal && board.every((_, i) => board[i][i] === player))
     return true;
-  if (isAntiDiagonal && board.every((_, i) => board[i][2 - i] === player))
+  if (isAntiDiagonal && board.every((_, i) => board[i][n - 1 - i] === player))
     return true;
 
   return false;
@@ -48,8 +54,12 @@ function isDraw(board) {
   return board.every((row) => row.every((cell) => cell !== null));
 }
 
-function play() {
-  const board = Array.from({ length: 3 }, () => Array(3).fill(null));
+function play(n) {
+  initTicTacToe(n);
+
+  const board = Array.from({ length: n }, () =>
+    Array.from({ length: n }).fill(null)
+  );
   const statusEl = document.querySelector('#game-status');
   const resetButton = document.querySelector('#reset');
   const players = ['X', 'O'];
@@ -58,12 +68,15 @@ function play() {
 
   statusEl.textContent = `Player ${currentPlayer}'s Turn`;
 
-  resetButton.addEventListener('click', () => {
+  // Clear all previous event listeners by cloning the reset button
+  const newResetButton = resetButton.cloneNode(true);
+  newResetButton.addEventListener('click', () => {
     resetBoard(board);
     gameOver = false;
     currentPlayer = players[0];
     statusEl.textContent = `Player ${currentPlayer}'s Turn`;
   });
+  resetButton.parentNode.replaceChild(newResetButton, resetButton);
 
   const cells = document.querySelectorAll('td button');
   cells.forEach((cell) => {
@@ -78,7 +91,7 @@ function play() {
       cell.style.cursor = 'default';
 
       // Check for a win or draw
-      if (gameWon(board, row, col)) {
+      if (gameWon(board, row, col, n)) {
         statusEl.textContent = `Player ${currentPlayer} Won!`;
         gameOver = true;
       } else if (isDraw(board)) {
@@ -93,5 +106,14 @@ function play() {
   });
 }
 
-initTicTacToe();
-play();
+let boardSize = Number(document.getElementById('board-size').value);
+play(boardSize);
+
+// if board size changes, play the game using n = board size
+document.getElementById('board-size').addEventListener('change', (e) => {
+  const n = Number(e.target.value);
+  if (n !== boardSize) {
+    boardSize = n;
+    play(boardSize);
+  }
+});
