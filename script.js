@@ -17,11 +17,11 @@ function initTicTacToe() {
 function resetBoard(board) {
   board.forEach((row, r) => {
     row.forEach((_, c) => {
-      board[r][c] = null; // Clear the logical board
+      board[r][c] = null;
       const button = document.getElementById(`${r}.${c}`);
-      button.textContent = ""; // Clear the visual button
-      button.disabled = false; // Enable the button
-      button.style.cursor = "pointer"; // Enable cursor
+      button.textContent = "";
+      button.disabled = false;
+      button.style.cursor = "pointer";
     });
   });
 }
@@ -31,14 +31,11 @@ function gameWon(board, r, c) {
 
   // Check row
   if (board[r].every(cell => cell === player)) return true;
-
   // Check column
   if (board.every(row => row[c] === player)) return true;
-
   // Check diagonals
   const isMainDiagonal = r === c;
   const isAntiDiagonal = r + c === 2;
-
   if (isMainDiagonal && board.every((_, i) => board[i][i] === player)) return true;
   if (isAntiDiagonal && board.every((_, i) => board[i][2 - i] === player)) return true;
 
@@ -57,10 +54,8 @@ function play() {
   let currentPlayer = players[0];
   let gameOver = false;
 
-  // Initialize the game
   statusEl.textContent = `Player ${currentPlayer}'s Turn`;
 
-  // Reset button functionality
   resetButton.addEventListener("click", () => {
     resetBoard(board);
     gameOver = false;
@@ -68,7 +63,6 @@ function play() {
     statusEl.textContent = `Player ${currentPlayer}'s Turn`;
   });
 
-  // Handle button clicks for each cell
   const buttons = document.querySelectorAll("td button");
   buttons.forEach(button => {
     button.addEventListener("click", () => {
