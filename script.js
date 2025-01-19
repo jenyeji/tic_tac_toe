@@ -118,5 +118,9 @@ class TicTacToe {
   }
 }
 
-const initialBoardSize = Number(document.getElementById('board-size').value);
-const game = new TicTacToe(initialBoardSize);
+function initGame() {
+  const initialBoardSize = Number(document.getElementById('board-size').value);
+  const game = new TicTacToe(initialBoardSize);
+}
+
+initGame();
