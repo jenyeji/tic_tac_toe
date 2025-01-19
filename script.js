@@ -1,7 +1,7 @@
-function initTicTacToe(n) {
+function initTable(n) {
   const table = document.querySelector('table');
-  // clean up any previous rows
-  document.querySelectorAll('tr').forEach((row) => row.remove());
+  // clean up any previous table
+  table.replaceChildren();
 
   Array.from({ length: n }).forEach((_, rowIndex) => {
     const row = document.createElement('tr');
@@ -55,7 +55,7 @@ function isDraw(board) {
 }
 
 function play(n) {
-  initTicTacToe(n);
+  initTable(n);
 
   const board = Array.from({ length: n }, () =>
     Array.from({ length: n }).fill(null)
@@ -109,11 +109,11 @@ function play(n) {
 let boardSize = Number(document.getElementById('board-size').value);
 play(boardSize);
 
-// if board size changes, play the game using n = board size
+// if board size changes, play the game using the new size
 document.getElementById('board-size').addEventListener('change', (e) => {
-  const n = Number(e.target.value);
-  if (n !== boardSize) {
-    boardSize = n;
+  const newSize = Number(e.target.value);
+  if (newSize !== boardSize) {
+    boardSize = newSize;
     play(boardSize);
   }
 });
