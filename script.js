@@ -14,7 +14,7 @@ class TicTacToe {
       const newSize = Number(e.target.value);
       if (newSize !== this.boardSize) {
         this.boardSize = newSize;
-        this.playNewGame();
+        this.resetGame();
       }
     });
   }
@@ -25,16 +25,9 @@ class TicTacToe {
     );
     this.gameOver = false;
     this.currentPlayer = this.players[0];
-    this.initTableDisplay();
     this.updateStatus();
-  }
 
-  playNewGame() {
-    this.initTableDisplay();
-    this.resetGame();
-  }
-
-  initTableDisplay() {
+    // Reset table display
     const table = document.querySelector('table');
     // Clear any old Tic Tac Toe table
     table.replaceChildren();
