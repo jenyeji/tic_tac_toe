@@ -65,6 +65,11 @@ class TicTacToe {
 
     // Check for a win or draw
     if (this.gameWon(row, col)) {
+      // disable all cells
+      document.querySelectorAll('td button').forEach((button) => {
+        button.disabled = true;
+        button.style.cursor = 'default';
+      });
       this.updateStatus(`Player ${this.currentPlayer} Won!`);
       this.gameOver = true;
     } else if (this.isDraw()) {
