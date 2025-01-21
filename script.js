@@ -54,7 +54,7 @@ class TicTacToe {
     button.style.cursor = 'default';
 
     // Check for a win or draw
-    if (this.gameWon(row, col)) {
+    if (this.isWin(row, col)) {
       // disable all cells
       document.querySelectorAll('td button').forEach((button) => {
         button.disabled = true;
@@ -75,7 +75,7 @@ class TicTacToe {
     }
   }
 
-  gameWon(row, col) {
+  isWin(row, col) {
     const player = this.board[row][col];
 
     // Check row
