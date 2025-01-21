@@ -3,20 +3,11 @@ class TicTacToe {
     this.boardSize = boardSize;
     this.players = ['X', 'O'];
     this.resetGame();
+  }
 
-    // Listen for reset event
-    document
-      .querySelector('#reset')
-      .addEventListener('click', () => this.resetGame());
-
-    // Listen for board size change event
-    document.getElementById('board-size').addEventListener('change', (e) => {
-      const newSize = Number(e.target.value);
-      if (newSize !== this.boardSize) {
-        this.boardSize = newSize;
-        this.resetGame();
-      }
-    });
+  changeBoardSize(newSize) {
+    this.boardSize = newSize;
+    this.resetGame();
   }
 
   resetGame() {
@@ -29,7 +20,6 @@ class TicTacToe {
 
     // Reset table display
     const table = document.querySelector('table');
-    // Clear any old Tic Tac Toe table
     table.replaceChildren();
 
     // Generate new Tic Tac Toe display
@@ -119,6 +109,19 @@ class TicTacToe {
 function initGame() {
   const initialBoardSize = Number(document.getElementById('board-size').value);
   const game = new TicTacToe(initialBoardSize);
+
+  // Listen for reset event
+  document
+    .querySelector('#reset')
+    .addEventListener('click', () => game.resetGame());
+
+  // Listen for board size change event
+  document.getElementById('board-size').addEventListener('change', (e) => {
+    const newSize = Number(e.target.value);
+    if (newSize !== game.boardSize) {
+      game.changeBoardSize(newSize);
+    }
+  });
 }
 
 initGame();
